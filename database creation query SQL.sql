@@ -66,6 +66,7 @@ CREATE TABLE responses(
   Questionid int unsigned,
   Optionid int unsigned,
   Testid int unsigned,
+  ShortAnswer char(255),
   Time_stamp timestamp,
   PRIMARY KEY(Responseid),
   FOREIGN KEY(Questionid) REFERENCES questions(Questionid),

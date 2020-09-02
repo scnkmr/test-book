@@ -45,13 +45,17 @@ function print_questions($test_id, $conn, $question_object){
 		$question_index=0;
 		while($row = $question->fetch_assoc()){
 			$question_object->questions[$question_index]->question = $row["Question"];
+			$question_object->questions[$question_index]->questionid = $row["Questionid"];
+			$question_object->questions[$question_index]->marks = $row["Marks"];
+			$question_object->questions[$question_index]->questionType = $row["Type"];
 			//fetchin option details for printing as object
-			$select_option_q = 'select Optiontext from options INNER JOIN questions ON questions.Questionid = options.Questionid WHERE questions.Questionid ='.$row["Questionid"];
+			$select_option_q = 'SELECT Optiontext, Optionid from options INNER JOIN questions ON questions.Questionid = options.Questionid WHERE questions.Questionid ='.$row["Questionid"];
 			$options = $conn->query($select_option_q);
 			if($options->num_rows > 0){
 				$option_index=0;
 				while($option_row = $options->fetch_assoc()){
-					$question_object->questions[$question_index]->options[$option_index] = $option_row["Optiontext"];
+					$question_object->questions[$question_index]->optionsGroup[$option_index]->option = $option_row["Optiontext"];
+					$question_object->questions[$question_index]->optionsGroup[$option_index]->optionid = $option_row["Optionid"];
 					//echo $option_row["Optiontext"]."<br>";
 					$option_index++;
 				}
