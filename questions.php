@@ -1,10 +1,31 @@
 <?php
+error_reporting(E_ALL ^ E_NOTICE); 
 error_reporting(E_ERROR);
 require('conn.php');
 header('Content-Type: application/json');
 
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: *");
+header('Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS');
+
+$request_method = $_SERVER["REQUEST_METHOD"];
+switch($request_method){
+    case "POST":
+        //do_post($conn);
+        break;
+    case "GET":
+		check_test_schedule(1,$conn);
+        break;
+    case "PUT":
+        //do_put($conn);
+        break;
+    case "DELETE":   
+        //do_delete($conn);
+        break;
+    default:
+        echo json_encode(array("status"=>"failed","error_message"=>"HTTP Method not defined :( (default method called)"));
+        break;
+}
 
 function check_test_schedule($test_id, $conn){
 	date_default_timezone_set("Asia/Calcutta");
@@ -67,9 +88,7 @@ function print_questions($test_id, $conn, $question_object){
 		echo "No Question Found :(";
 	}
 	echo json_encode($question_object);
+	$conn->close();
 }
-check_test_schedule(1,$conn);
-
-$conn->close();
 ?>
 
